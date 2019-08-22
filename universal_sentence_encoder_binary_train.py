@@ -67,8 +67,8 @@ if __name__ == '__main__':
     with tf.Session() as session:
         session.run([tf.global_variables_initializer(), tf.tables_initializer()])
 
-        for i in tqdm(range(0, len(sentences), args.batch_size)):
-            train_embeddings.extend(session.run(embed(sentences[i:i + args.batch_size])))
+        for i in tqdm(range(0, len(sentences), 512)):
+            train_embeddings.extend(session.run(embed(sentences[i:i + 512])))
 
     train_data = list(zip(train_embeddings, train_labels))
     random.shuffle(train_data)
@@ -102,6 +102,7 @@ if __name__ == '__main__':
             y=train_labels,
             validation_data=(dev_embeddings, dev_labels),
             epochs=args.epochs,
+            batch_size=args.batch_size,
             callbacks=[checkpoint_cb]
         )
     else:
@@ -109,5 +110,6 @@ if __name__ == '__main__':
             x=train_embeddings,
             y=train_labels,
             epochs=args.epochs,
+            batch_size=args.batch_size,
             callbacks=[checkpoint_cb]
         )

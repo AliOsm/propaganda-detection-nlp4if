@@ -17,23 +17,6 @@ from keras.callbacks import ModelCheckpoint, Callback
 from helpers import *
 from rnn_binary_data_generator import DataGenerator
 
-def f1(y_true, y_pred):
-    def precision(y_true, y_pred):
-        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-        predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
-        precision = true_positives / (predicted_positives + K.epsilon())
-        return precision
-
-    def recall(y_true, y_pred):
-        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-        possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
-        recall = true_positives / (possible_positives + K.epsilon())
-        return recall
-
-    precision = precision(y_true, y_pred)
-    recall = recall(y_true, y_pred)
-    return 2 * ((precision * recall) / (precision + recall + K.epsilon()))
-
 def build_model(embeddings_size):
     tokens_embeddings_input = Input(shape=(None, embeddings_size,))
 
@@ -50,7 +33,6 @@ def build_model(embeddings_size):
         LSTM(
             units=128,
             dropout=args.dropout_rate,
-            return_sequences=True,
             kernel_initializer='he_normal'
         )
     )(lstm)
