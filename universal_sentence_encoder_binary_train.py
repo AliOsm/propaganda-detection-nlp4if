@@ -93,7 +93,7 @@ if __name__ == '__main__':
     model = build_model(len(train_embeddings[0]))
 
     checkpoint_cb = ModelCheckpoint(
-        filepath='checkpoints/universal-sentence-encoder-epoch{epoch:02d}.h5'
+        filepath='checkpoints/universal-sentence-encoder-binary-epoch{epoch:02d}.h5'
     )
 
     if args.dev_split != 0:

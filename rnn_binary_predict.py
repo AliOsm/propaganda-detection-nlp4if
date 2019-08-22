@@ -35,7 +35,7 @@ if __name__ == '__main__':
         }
     )
 
-    with open(join(args.data_dir, 'submit-rnn-binary-%s.txt' % args.prediction_type), 'w') as file:
+    with open(join(args.data_dir, 'rnn-binary-%s.txt' % args.prediction_type), 'w') as file:
         writer = csv.writer(file, delimiter='\t')
 
         for example in tqdm(dev_data):
@@ -43,7 +43,7 @@ if __name__ == '__main__':
             prediction = model.predict(np.array([embeddings])).squeeze()
 
             if args.prediction_type == 'binary':
-                if len(embeddings) == 0 or prediction < 0.20:
+                if len(embeddings) == 0 or prediction < 0.25:
                     writer.writerow([example[0], example[1], 'non-propaganda'])
                 else:
                     writer.writerow([example[0], example[1], 'propaganda'])

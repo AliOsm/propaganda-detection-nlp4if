@@ -19,7 +19,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
     parser.add_argument('--batch-size', default=512, type=int)
-    parser.add_argument('--model-path', default='checkpoints/universal-sentence-encoder-epoch05.h5')
+    parser.add_argument('--model-path', default='checkpoints/universal-sentence-encoder-binary-epoch05.h5')
     parser.add_argument('--prediction-type', default='binary', choices=['binary', 'probability'])
     args = parser.parse_args()
 
@@ -52,14 +52,14 @@ if __name__ == '__main__':
             sentences = [example[2] for example in dev_data[i:i + args.batch_size]]
             dev_embeddings.extend(session.run(embed(sentences)))
 
-    with open(join(args.data_dir, 'submit-universal-sentence-encoder-%s.txt' % args.prediction_type), 'w') as file:
+    with open(join(args.data_dir, 'universal-sentence-encoder-binary-%s.txt' % args.prediction_type), 'w') as file:
         writer = csv.writer(file, delimiter='\t')
         
         for example, embeddings in tqdm(zip(dev_data, dev_embeddings)):
             prediction = model.predict(np.array([embeddings])).squeeze()
 
             if args.prediction_type == 'binary':
-                if len(example[2].strip()) == 0 or prediction < 0.20:
+                if len(example[2].strip()) == 0 or prediction < 0.25:
                     writer.writerow([example[0], example[1], 'non-propaganda'])
                 else:
                     writer.writerow([example[0], example[1], 'propaganda'])
