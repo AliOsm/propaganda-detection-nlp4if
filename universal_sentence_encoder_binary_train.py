@@ -41,7 +41,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
     parser.add_argument('--epochs', default=5, type=int)
-    parser.add_argument('--batch-size', default=512, type=int)
+    parser.add_argument('--batch-size', default=32, type=int)
     parser.add_argument('--dropout-rate', default=0.2, type=float)
     parser.add_argument('--dev-split', default=0, type=float)
     args = parser.parse_args()
