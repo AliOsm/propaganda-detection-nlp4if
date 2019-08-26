@@ -33,8 +33,8 @@ if __name__ == '__main__':
                 data[(file_number, i + 1)].insert(0, line.strip())
 
     with open(join(args.data_dir, '%s-data.tsv' % args.dataset_split), 'w') as file:
-      writer = csv.writer(file, delimiter='\t')
-      writer.writerow(['file_number', 'line_number', 'text', 'label'])
+        writer = csv.writer(file, delimiter='\t')
+        writer.writerow(['file_number', 'line_number', 'text', 'label'])
 
-      for file_number, line_number in data:
-        writer.writerow([file_number, line_number] + data[(file_number, line_number)])
+        for file_number, line_number in data:
+            writer.writerow([file_number, line_number] + data[(file_number, line_number)])

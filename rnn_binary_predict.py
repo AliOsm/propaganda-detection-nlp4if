@@ -43,12 +43,12 @@ if __name__ == '__main__':
             prediction = model.predict(np.array([embeddings])).squeeze()
 
             if args.prediction_type == 'binary':
-                if len(embeddings) == 0 or prediction < 0.25:
+                if len(embeddings) == 2 or prediction < 0.25:
                     writer.writerow([example[0], example[1], 'non-propaganda'])
                 else:
                     writer.writerow([example[0], example[1], 'propaganda'])
             else:
-                if len(embeddings) == 0:
+                if len(embeddings) == 2:
                     writer.writerow([example[0], example[1], 0.0])
                 else:
                     writer.writerow([example[0], example[1], prediction])
