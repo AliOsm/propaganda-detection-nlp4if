@@ -6,7 +6,7 @@ from os.path import join
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
-    parser.add_argument('--predictions-files', nargs='+', default=['rnn-binary-probability.txt', 'universal-sentence-encoder-binary-probability.txt'])
+    parser.add_argument('--predictions-files', nargs='+', default=['rnn-binary-bert-uncased-probability.txt', 'rnn-binary-bert-cased-probability.txt', 'universal-sentence-encoder-binary-probability.txt'])
     args = parser.parse_args()
 
     predictions = dict()

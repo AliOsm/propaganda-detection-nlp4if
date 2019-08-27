@@ -60,19 +60,20 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', default=128, type=int)
     parser.add_argument('--dropout-rate', default=0.2, type=float)
     parser.add_argument('--dev-split', default=0, type=float)
+    parser.add_argument('--bert-model-type', default='uncased', choices=['uncased', 'cased'])
     args = parser.parse_args()
 
     # shut up tensorflow and keras
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-    with open(join(args.data_dir, 'train-data-from-bert.pkl'), 'rb') as file:
+    with open(join(args.data_dir, 'train-data-from-bert-%s.pkl' % args.bert_model_type), 'rb') as file:
         train_data = pkl.load(file)
 
     train_embeddings = list()
     train_labels = list()
     for example in train_data:
-        if len(train_data[example][0]) == 0: continue
+        if len(train_data[example][0]) == 2: continue
         train_embeddings.append([item.numpy() for item in train_data[example][0]])
         train_labels.append(int(train_data[example][1]))
 
@@ -109,7 +110,7 @@ if __name__ == '__main__':
         dev_generator = DataGenerator(dev_embeddings, dev_labels, args.batch_size)
 
     checkpoint_cb = ModelCheckpoint(
-        filepath='checkpoints/rnn-binary-epoch{epoch:02d}.h5'
+        filepath='checkpoints/rnn-binary-bert-%s-epoch{epoch:02d}.h5' % args.bert_model_type
     )
 
     if args.dev_split != 0:

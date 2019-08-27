@@ -13,6 +13,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
     parser.add_argument('--dataset-split', default='train', choices=['train', 'dev'])
+    parser.add_argument('--bert-model-type', default='uncased', choices=['uncased', 'cased'])
     args = parser.parse_args()
 
     data = list()
@@ -23,8 +24,8 @@ if __name__ == '__main__':
         for row in reader:
             data.append(row)
 
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    model = BertModel.from_pretrained('bert-base-uncased')
+    tokenizer = BertTokenizer.from_pretrained('bert-base-%s' % args.bert_model_type)
+    model = BertModel.from_pretrained('bert-base-%s' % args.bert_model_type)
     model.eval()
 
     sentences_embeddings = dict()
@@ -52,5 +53,5 @@ if __name__ == '__main__':
 
         sentences_embeddings[(row[0], row[1])] = (summed_last_4_layers, row[-1])
 
-    with open(join(args.data_dir, '%s-data-from-bert.pkl' % args.dataset_split), 'wb') as file:
+    with open(join(args.data_dir, '%s-data-from-bert-%s.pkl' % (args.dataset_split, args.bert_model_type)), 'wb') as file:
         pkl.dump(sentences_embeddings, file)
