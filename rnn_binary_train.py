@@ -56,7 +56,7 @@ def build_model(embeddings_size):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
-    parser.add_argument('--epochs', default=4, type=int)
+    parser.add_argument('--epochs', default=5, type=int)
     parser.add_argument('--batch-size', default=128, type=int)
     parser.add_argument('--dropout-rate', default=0.2, type=float)
     parser.add_argument('--dev-split', default=0, type=float)
