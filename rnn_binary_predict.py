@@ -1,7 +1,5 @@
 import os
 import csv
-import random
-random.seed(961)
 import argparse
 
 import numpy as np
