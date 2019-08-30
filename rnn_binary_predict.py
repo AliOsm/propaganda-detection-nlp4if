@@ -17,6 +17,7 @@ from helpers import *
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
+    parser.add_argument('--dataset-split', default='dev', choices=['dev', 'test'])
     parser.add_argument('--model-path', default='checkpoints/rnn-binary-bert-%s-epoch04.h5')
     parser.add_argument('--prediction-type', default='binary', choices=['binary', 'probability'])
     parser.add_argument('--bert-model-type', default='uncased', choices=['uncased', 'cased'])
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-    with open(join(args.data_dir, 'dev-data-from-bert-%s.pkl' % args.bert_model_type), 'rb') as file:
+    with open(join(args.data_dir, '%s-data-from-bert-%s.pkl' % (args.dataset_split, args.bert_model_type)), 'rb') as file:
         dev_data = pkl.load(file)
 
     model = load_model(
@@ -38,7 +39,7 @@ if __name__ == '__main__':
         }
     )
 
-    with open(join(args.data_dir, 'rnn-binary-bert-%s-%s.txt' % (args.bert_model_type, args.prediction_type)), 'w') as file:
+    with open(join(args.data_dir, '%s-rnn-binary-bert-%s-%s.txt' % (args.dataset_split, args.bert_model_type, args.prediction_type)), 'w') as file:
         writer = csv.writer(file, delimiter='\t')
 
         for example in tqdm(dev_data):

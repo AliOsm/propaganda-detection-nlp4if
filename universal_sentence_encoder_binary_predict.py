@@ -18,6 +18,7 @@ from helpers import *
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
+    parser.add_argument('--dataset-split', default='dev', choices=['dev', 'test'])
     parser.add_argument('--model-path', default='checkpoints/universal-sentence-encoder-binary-epoch05.h5')
     parser.add_argument('--prediction-type', default='binary', choices=['binary', 'probability'])
     args = parser.parse_args()
@@ -27,7 +28,7 @@ if __name__ == '__main__':
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
     dev_data = list()
-    with open(join(args.data_dir, 'dev-data.tsv'), 'r') as file:
+    with open(join(args.data_dir, '%s-data.tsv' % args.dataset_split), 'r') as file:
         reader = csv.reader(file, delimiter='\t')
         next(reader)
 
@@ -51,7 +52,7 @@ if __name__ == '__main__':
             sentences = [example[2] for example in dev_data[i:i + 512]]
             dev_embeddings.extend(session.run(embed(sentences)))
 
-    with open(join(args.data_dir, 'universal-sentence-encoder-binary-%s.txt' % args.prediction_type), 'w') as file:
+    with open(join(args.data_dir, '%s-universal-sentence-encoder-binary-%s.txt' % (args.dataset_split, args.prediction_type)), 'w') as file:
         writer = csv.writer(file, delimiter='\t')
         
         for example, embeddings in tqdm(zip(dev_data, dev_embeddings)):
