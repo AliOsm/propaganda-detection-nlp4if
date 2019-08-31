@@ -7,7 +7,7 @@ from os.path import join
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-dir', default='data_dir')
-    parser.add_argument('--dataset-split', default='train', choices=['train', 'dev'])
+    parser.add_argument('--dataset-split', default='train', choices=['train', 'dev', 'test'])
     args = parser.parse_args()
 
     data = dict()
